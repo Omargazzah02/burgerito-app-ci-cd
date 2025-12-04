@@ -1,5 +1,9 @@
 name: CI Pipeline
 
+env:
+  NEXTAUTH_SECRET: ${{ secrets.NEXTAUTH_SECRET }}
+
+
 on:
   push:
     branches: [main]
@@ -74,6 +78,7 @@ jobs:
         run: npm ci
       - name: Build Next.js app
         run: npm run build
+
 
       - name: Start Next.js app
         run: npm run start &
