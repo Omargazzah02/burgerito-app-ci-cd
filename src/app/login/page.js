@@ -35,6 +35,7 @@ export default function page() {
           <input
             className="arounded-gray text-center text-white w-full"
             placeholder="E-mail"
+            name="email"
             value={email}
             onChange={(e) => setEmail(e.target.value)}
             type="email"
@@ -43,6 +44,7 @@ export default function page() {
           <input
             className="arounded-gray text-center text-white w-full"
             placeholder="Mot de passe"
+            name="password"
             value={password}
             onChange={(e) => setPassword(e.target.value)}
             type="password"
@@ -50,7 +52,7 @@ export default function page() {
           />
         </div>
 
-        <button className="button--orange w-full sm:w-1/2 mx-auto">Confirmer</button>
+        <button className="button--orange w-full sm:w-1/2 mx-auto" type="submit">Confirmer</button>
         {error && <p className="text--error text-center">{error}</p>}
       </form>
     </section>
