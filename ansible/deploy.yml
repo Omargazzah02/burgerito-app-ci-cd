@@ -46,7 +46,7 @@
         repo: "{{ repo_url }}"
         dest: "{{ app_path }}"
         version: main
-        umpdate: yes
+        update: yes
         force: yes
 
 
