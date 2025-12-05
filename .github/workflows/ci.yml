@@ -33,6 +33,4 @@ deploy:
 
     # Définir l'IP du serveur via secret
     - name: Run Ansible Playbook
-      run: ansible-playbook -i ansible/inventory.ini ansible/playbook_deploy.yml
-      env:
-        EC2_HOST: ${{ secrets.EC2_HOST }}
+      run: ansible-playbook -i ansible/inventory.ini ansible/deploy.yml
