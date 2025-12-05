@@ -9,18 +9,30 @@ on:
     branches: [main]
   pull_request:
 
+jobs:
 
-  deploy:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v3
-      - name: Install Ansible
-        run: sudo apt update && sudo apt install -y ansible
-      - name: Load SSH key
-        uses: webfactory/ssh-agent@v0.8.1
-        with:
-          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
-      - name: Run Ansible Playbook
-        run: ansible-playbook -i ansible/inventory.ini ansible/playbook_deploy.yml
-        env:
-          EC2_HOST: ${{ secrets.EC2_HOST }}
+  
+  # -------------------------
+# 4️⃣ Déploiement via Ansible
+# -------------------------
+deploy:
+  runs-on: ubuntu-latest
+  steps:
+    - name: Checkout code
+      uses: actions/checkout@v3
+
+    # Installer Ansible
+    - name: Install Ansible
+      run: sudo apt update && sudo apt install -y ansible
+
+    # Charger la clé SSH pour EC2 depuis GitHub Secrets
+    - name: Load SSH key
+      uses: webfactory/ssh-agent@v0.8.1
+      with:
+        ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+
+    # Définir l'IP du serveur via secret
+    - name: Run Ansible Playbook
+      run: ansible-playbook -i ansible/inventory.ini ansible/playbook_deploy.yml
+      env:
+        EC2_HOST: ${{ secrets.EC2_HOST }}
