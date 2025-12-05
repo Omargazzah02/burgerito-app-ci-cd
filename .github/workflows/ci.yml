@@ -23,7 +23,7 @@ jobs:
 
       # 3️⃣ Charger la clé SSH
       - name: Load SSH key
-        uses: webfactory/ssh-agent@v0.8.2
+        uses: webfactory/ssh-agent@v0.9.1
         with:
           ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
 
