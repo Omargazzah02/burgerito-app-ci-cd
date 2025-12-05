@@ -27,6 +27,11 @@ jobs:
         with:
           ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
 
+      - name: Add EC2 server to known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
+
       # 4️⃣ Vérifier la connexion SSH
       - name: Test SSH connection
         run: ansible -i ansible/inventory.ini webserver -m ping
