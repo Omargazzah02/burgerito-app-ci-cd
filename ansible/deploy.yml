@@ -5,7 +5,7 @@
 
   vars:
     repo_url: "https://github.com/Omargazzah02/burgerito-app-ci-cd.git"
-    app_path: "/"
+    app_path: "/burgerito-app"
  
     pm2_app_name: "next-app"
 
@@ -46,7 +46,7 @@
         repo: "{{ repo_url }}"
         dest: "{{ app_path }}"
         version: main
-        update: yes
+        umpdate: yes
         force: yes
 
 
