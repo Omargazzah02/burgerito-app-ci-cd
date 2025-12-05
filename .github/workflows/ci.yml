@@ -10,7 +10,6 @@ on:
   pull_request:
 
 jobs:
-
   
   # -------------------------
 # 4️⃣ Déploiement via Ansible
