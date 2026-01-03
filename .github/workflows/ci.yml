@@ -126,3 +126,35 @@ jobs:
           name: nextjs-build
           path: .next
 
+
+
+  deploy:
+    runs-on: ubuntu-latest
+    needs: build
+    steps:
+      # 1️⃣ Checkout du code
+      - name: Checkout code
+        uses: actions/checkout@v3
+
+      # 2️⃣ Installer Ansible
+      - name: Install Ansible
+        run: sudo apt update && sudo apt install -y ansible
+
+      # 3️⃣ Charger la clé SSH
+      - name: Load SSH key
+        uses: webfactory/ssh-agent@v0.9.1
+        with:
+          ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
+
+      - name: Add EC2 server to known_hosts
+        run: |
+          mkdir -p ~/.ssh
+          ssh-keyscan -H 4.180.172.251 >> ~/.ssh/known_hosts
+
+      # 4️⃣ Vérifier la connexion SSH
+      - name: Test SSH connection
+        run: ansible -i ansible/inventory.ini webserver -m ping
+
+      # 5️⃣ Lancer le playbook Ansible
+      - name: Run Ansible Playbook
+        run: ansible-playbook -i ansible/inventory.ini ansible/deploy.yml
