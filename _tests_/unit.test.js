@@ -1,4 +1,4 @@
-import ProductCard from "@/components/ProductCard"
+import ProductCard from '.././src/components/ProductCard'
 import { render, screen } from '@testing-library/react'
 
 describe('ProductCard component', () => {

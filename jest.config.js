@@ -1,12 +1,11 @@
-const nextJest = require('next/jest')
-
-const createJestConfig = nextJest({
-  dir: './',
-})
-
-const customJestConfig = {
-  testEnvironment: 'jest-environment-jsdom', // <- ça va marcher après l'installation
+module.exports = {
+  testEnvironment: 'jsdom',
   setupFilesAfterEnv: ['<rootDir>/jest.setup.js'],
-}
-
-module.exports = createJestConfig(customJestConfig)
+  transform: {
+    '^.+\\.(js|jsx|ts|tsx)$': ['babel-jest', { configFile: './babel.jest.config.js' }],
+  },
+  moduleNameMapper: {
+    '^@/(.*)$': '<rootDir>/$1',  // <-- attention aux quotes et au slash normal
+    '\\.(css|scss|sass)$': 'identity-obj-proxy', // pour CSS modules
+  },
+};

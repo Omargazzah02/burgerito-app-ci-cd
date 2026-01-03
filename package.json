@@ -18,10 +18,12 @@
     "ws": "^8.18.3"
   },
   "devDependencies": {
+    "@babel/preset-env": "^7.28.5",
     "@babel/preset-react": "^7.28.5",
     "@tailwindcss/postcss": "^4",
     "@testing-library/jest-dom": "^6.9.1",
     "@testing-library/react": "^16.3.1",
+    "babel-jest": "^30.2.0",
     "cypress": "^15.7.1",
     "eslint": "^9.39.1",
     "eslint-config-next": "^16.0.7",
