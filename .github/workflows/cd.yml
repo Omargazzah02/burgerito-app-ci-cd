@@ -1,10 +1,6 @@
 name: CD Pipeline
 
-on:
-  workflow_run:
-    workflows: ["CI Pipeline"]  # doit correspondre exactement au nom du workflow CI
-    types:
-      - completed
+
 
 jobs:
   deploy:
