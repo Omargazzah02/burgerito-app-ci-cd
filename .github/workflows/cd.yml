@@ -1,41 +1,40 @@
 name: CD Pipeline
 
+# Déclenche le workflow manuellement ou sur push (testable)
 on:
-  workflow_run:
-    workflows: ["CI Pipeline"]  # doit correspondre exactement au nom du workflow CI
-    types:
-      - completed
+  workflow_dispatch:    # permet de lancer manuellement depuis GitHub
+  push:
+    branches: [main]   # optionnel, si tu veux tester sur push aussi
 
 jobs:
   deploy:
-    if: ${{ github.event.workflow_run.conclusion == 'success' }}
     runs-on: ubuntu-latest
     steps:
-      # 1 Checkout du code
+      # 1. Récupérer le code
       - name: Checkout code
         uses: actions/checkout@v3
 
-      # 2 Installer Ansible
+      # 2. Installer Ansible
       - name: Install Ansible
         run: sudo apt update && sudo apt install -y ansible
 
-      # 3 Charger la clé SSH
+      # 3. Charger la clé SSH
       - name: Load SSH key
         uses: webfactory/ssh-agent@v0.9.1
         with:
           ssh-private-key: ${{ secrets.EC2_SSH_KEY }}
 
-      # 4 Ajouter le serveur EC2 à known_hosts
+      # 4. Ajouter le serveur EC2 à known_hosts
       - name: Add EC2 server to known_hosts
         run: |
           mkdir -p ~/.ssh
           ssh-keyscan -H ${{ secrets.EC2_HOST }} >> ~/.ssh/known_hosts
         shell: bash
 
-      # 5 Vérifier la connexion SSH
+      # 5. Vérifier la connexion SSH
       - name: Test SSH connection
         run: ansible -i ansible/inventory.ini webserver -m ping
 
-      # 6 Lancer le playbook Ansible
+      # 6. Lancer le playbook Ansible
       - name: Run Ansible Playbook
         run: ansible-playbook -i ansible/inventory.ini ansible/deploy.yml
