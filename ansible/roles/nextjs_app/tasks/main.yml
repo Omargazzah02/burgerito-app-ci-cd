@@ -1,0 +1,39 @@
+- name: Cloner ou mettre à jour le dépôt GitHub
+  git:
+    repo: "{{ repo_url }}"
+    dest: "{{ app_path }}"
+    version: main
+    update: yes
+    force: yes
+
+- name: Installer les dépendances
+  command: npm install
+  args:
+    chdir: "{{ app_path }}"
+
+- name: Exécuter les tests
+  command: npm test
+  args:
+    chdir: "{{ app_path }}"
+
+- name: Build le projet Next.js
+  command: npm run build
+  args:
+    chdir: "{{ app_path }}"
+  environment:
+    NEXTAUTH_SECRET: "{{ nextauth_secret }}"
+
+- name: Vérifier si l'application est déjà en cours d'exécution avec PM2
+  command: pm2 list
+  register: pm2_status
+  changed_when: false
+
+- name: Démarrer l'application avec PM2 si elle n'est pas en cours d'exécution
+  command: pm2 start npm --name "{{ pm2_app_name }}" -- run start -- --port 3000
+  args:
+    chdir: "{{ app_path }}"
+  when: "pm2_app_name not in pm2_status.stdout"
+
+- name: Redémarrer l'application avec PM2 si elle est en cours d'exécution
+  command: pm2 restart "{{ pm2_app_name }}"
+  when: "pm2_app_name in pm2_status.stdout"

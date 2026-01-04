@@ -1,0 +1,14 @@
+- name: Mettre à jour les paquets
+  apt:
+    update_cache: yes
+    upgrade: yes
+
+- name: Installer Node.js et npm
+  shell: |
+    curl -fsSL https://deb.nodesource.com/setup_18.x | bash -
+    apt-get install -y nodejs
+
+- name: Installer PM2 globalement
+  npm:
+    name: pm2
+    global: yes
